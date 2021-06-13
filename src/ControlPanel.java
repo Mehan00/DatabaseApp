@@ -15,8 +15,13 @@ class ControlPanel extends JPanel{
 		try{
             setPreferredSize(new Dimension(500,50));
 
-            lab1 = new JLabel("ControlPanel");
-            add(lab1);
+            addButton = new JButton("DODAJ");
+            delButton = new JButton("USUŃ");
+            modButton = new JButton("MODYFIKUJ");
+            add(addButton);
+            add(delButton);
+            add(modButton);
+
         }
         catch(Exception err){
         	new UnknownException("Exception caught in class ControlPanel. In the constructor.\n", err);
