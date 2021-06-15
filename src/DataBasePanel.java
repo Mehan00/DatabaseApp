@@ -18,7 +18,7 @@ class DataBasePanel extends JPanel{
             add(lab1);
         }
         catch(Exception err){
-        	new UnknownException("Exception caught in class ControlPanel. In the constructor.\n", err);
+        	new UnknownException("Exception caught in class DatabasePanel. In the constructor.\n", err);
         }
 	}
 }
