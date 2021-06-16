@@ -7,7 +7,7 @@ public class MainClass {
 
         EventQueue.invokeLater(() -> {
         	
-        	AppClass app =new AppClass("Strona główna");
+        	AppClass app =new AppClass("Panel główny");
             app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE );
             app.setVisible(true);
         	
