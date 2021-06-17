@@ -6,27 +6,33 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
+
 import java.awt.Color;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.awt.event.*;
 import java.awt.BorderLayout;
 
 //	#Klasa ktora obsluguje panel sterowania i komunikuje sie z dataBasePanel
 class ControlPanel extends JPanel{
     
-            
+    Map<Integer, List<String>> ItemList = new HashMap<>();
     
     private AppClass parentFrame;
-	private JButton addButton , clearButton, modButton;
+	private JButton addButton , clearButton, showButton;
     private JLabel lab1;
     private JTextField productName, productPrice, productCount;
     private JPanel p = new JPanel();
-    public JTextArea textArea;
-
+    private JTextArea textArea;
+    private Integer i = 0;
 	
 	public ControlPanel(AppClass parentFrame) {
 		try{
@@ -35,7 +41,7 @@ class ControlPanel extends JPanel{
 
             addButton = new JButton("DODAJ");
             clearButton = new JButton("WYCZYŚĆ");
-            modButton = new JButton("MODYFIKUJ");
+            showButton = new JButton("POKAŻ");
           
             
             //textfield z nazwa produktu i funkcja do tak zwanego placeholer
@@ -114,30 +120,29 @@ class ControlPanel extends JPanel{
 
             p.add(addButton);
             p.add(clearButton);
-            add(modButton);
+            add(showButton);
             add(lab1);
 
-            textArea = new JTextArea ();
-            textArea.setPreferredSize(new Dimension(400,280));   
+            textArea = new JTextArea (20,40);
+           
             textArea.setLineWrap(true);
             textArea.setEditable(false);
-            
+            textArea.setWrapStyleWord(true);
             JScrollPane scroll = new JScrollPane (textArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
             add(scroll);
 
            
-
             addButton.addActionListener (e -> {
                 try {
-                    
                     List<String> Item = new ArrayList<>();
+                    
+                    
                     Item.add(productName.getText());
                     Item.add(productCount.getText());
                     Item.add(productPrice.getText());
-                    parentFrame.Itemlist.add(Item);
-                    //System.out.println(parentFrame.Itemlist); 
-                    textArea.setText(parentFrame.Itemlist.toString()); 
-                                   
+                    ItemList.put(i,Item);
+                    i++;
+                    System.out.println(Item);                  
                 }
                 catch (Exception err) {
                     JOptionPane.showMessageDialog(parentFrame, "Niepoprawne dane w polach tekstowych.");
@@ -156,10 +161,28 @@ class ControlPanel extends JPanel{
                                     
                 }
                 catch (Exception err) {
-                    JOptionPane.showMessageDialog(parentFrame, "error");
+                    JOptionPane.showMessageDialog(parentFrame, "Error in cleearButton");
                 }
             
-        });
+            });
+            showButton.addActionListener (e -> {
+                try {
+
+
+                    textArea.setText("");
+                    Set<Map.Entry<Integer, List<String>>> entries = ItemList.entrySet();
+                    Iterator<Map.Entry<Integer, List<String>>> itemIterator = entries.iterator();
+
+                    while(itemIterator.hasNext()) {
+                        Map.Entry<Integer, List<String>> entry = itemIterator.next();
+                        textArea.append(entry.getKey()+" "+entry.getValue()+"\n");
+                    }          
+                }
+                catch (Exception err) {
+                    JOptionPane.showMessageDialog(parentFrame, "Error in modButton");
+                }
+        
+    });
 
         }
         catch(Exception err){
